@@ -1,0 +1,22 @@
+[
+    {
+        "name":"iphone 14 pro max",
+        "price": "120000"
+    },
+    {
+        "name":"samsung galaxy s23 ultra",
+        "price": "110000"
+    },
+    {
+        "name":"oneplus 11 pro",
+        "price": "90000"
+    },
+    {
+        "name":"google pixel 7 pro",
+        "price": "85000"
+    },
+    {
+        "name":"xiaomi mi 12 pro",
+        "price": "80000"
+    }  
+]
