@@ -1,6 +1,6 @@
 import express from 'express';
-import fs from 'fs/promises';
 import config from './config/config.js';
+import productRoute from './routes/productRoute.js';
 
 const app = express();
 
@@ -8,14 +8,7 @@ app.get('/', (req, res) => {
     res.send('Hello from express');
 });
 
-app.get('/products', async (req, res) => {
-    try {
-        const products = await fs.readFile('src/data/products.json', 'utf8');
-        res.json(JSON.parse(products));
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to read products data' });
-    }
-});
+app.use('/products', productRoute);
 
 app.get('/about', (req, res) => {
     res.send('This is the about page');
