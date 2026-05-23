@@ -9,4 +9,4 @@ const getAllProducts = async (req, res) => {
     }
 };
 
-export default { productController };
+export default { getAllProducts };
