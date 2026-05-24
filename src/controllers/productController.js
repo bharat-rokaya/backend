@@ -9,4 +9,17 @@ const getAllProducts = async (req, res) => {
     }
 };
 
-export default { getAllProducts };
+const getProductById = async (req, res) => {
+    try {
+        const productId = parseInt(req.params.id);
+        const product = await productService.getProductById(productId);
+        if (!product) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+        res.json(product);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch product' });
+    }
+};
+
+export default { getAllProducts, getProductById };

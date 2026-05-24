@@ -11,5 +11,15 @@ const getAllProducts = async () => {
     }
 };
 
+const getProductById = async (id) => {
+    try {
+        const products = await getAllProducts();
+        return products.find(product => product.id === id);
+    } catch (error) {
+        console.error('Error fetching product by ID:', error);
+        throw new Error('Failed to fetch product');
+    }
+};
 
-export default getAllProducts;
+
+export default { getAllProducts, getProductById };
