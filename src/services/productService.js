@@ -1,25 +1,30 @@
-import fs from 'fs/promises';
+import Product from '../models/Product.js';
 
 const getAllProducts = async () => {
     try {
-        const data = await fs.readFile(new URL('../data/products.json', import.meta.url), 'utf-8');
-        const products = JSON.parse(data);
+        const products = await Product.find();
         return products;
     } catch (error) {
-        console.error('Error reading products:', error);
-        throw new Error('Failed to read products');
+        console.error(error);
     }
 };
 
 const getProductById = async (id) => {
     try {
-        const products = await getAllProducts();
-        return products.find(product => product.id === id);
+        const product = await Product.findById(id);
+        return product;
     } catch (error) {
-        console.error('Error fetching product by ID:', error);
-        throw new Error('Failed to fetch product');
+        console.error(error);
     }
 };
 
+const createProduct = async () => {
+    return await Product.create({
+        name: 'iPhone 16 Pro',
+        brand: 'Apple',
+        category: 'Smartphones',
+        price: 180000,
+    });
+};
 
-export default { getAllProducts, getProductById };
+export default { getAllProducts, getProductById, createProduct };

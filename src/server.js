@@ -1,14 +1,18 @@
 import express from 'express';
+
 import config from './config/config.js';
 import productRoute from './routes/productRoute.js';
+import connectDB from './config/database.js';
 
 const app = express();
+
+connectDB();
 
 app.get('/', (req, res) => {
     res.send('Hello from express');
 });
 
-app.use('/products', productRoute);
+app.use('/api/products', productRoute);
 
 app.get('/about', (req, res) => {
     res.send('This is the about page');
