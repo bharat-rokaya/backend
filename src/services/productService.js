@@ -11,7 +11,7 @@ const getAllProducts = async () => {
 
 const getProductById = async (id) => {
     try {
-        const product = await Product.findById(id);
+        const product = await Product.findById(_id);
         return product;
     } catch (error) {
         console.error(error);
@@ -20,7 +20,7 @@ const getProductById = async (id) => {
 
 const createProduct = async () => {
     return await Product.create({
-        name: 'iPhone 16 Pro',
+        name: 'iphone 15',
         brand: 'Apple',
         category: 'Smartphones',
         price: 180000,
