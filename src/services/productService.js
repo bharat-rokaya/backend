@@ -5,26 +5,25 @@ const getAllProducts = async () => {
         const products = await Product.find();
         return products;
     } catch (error) {
-        console.error(error);
+        res.status(500).json({ error: error.message });
     }
 };
 
 const getProductById = async (id) => {
     try {
-        const product = await Product.findById(_id);
+        const product = await Product.findById(id);
         return product;
     } catch (error) {
-        console.error(error);
+        res.status(500).json({ error: error.message });
     }
 };
 
-const createProduct = async () => {
-    return await Product.create({
-        name: 'iphone 15',
-        brand: 'Apple',
-        category: 'Smartphones',
-        price: 180000,
-    });
+const createProduct = async (productData) => {
+    try {
+        return await Product.create(productData);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 };
 
 export default { getAllProducts, getProductById, createProduct };

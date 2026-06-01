@@ -2,17 +2,23 @@ import express from 'express';
 
 import config from './config/config.js';
 import productRoute from './routes/productRoute.js';
+import userRoute from './routes/userRoute.js';
 import connectDB from './config/database.js';
+import bodyParser from 'body-parser';
 
 const app = express();
 
 connectDB();
+
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
     res.send('Hello from express');
 });
 
 app.use('/api/products', productRoute);
+
+app.use('/api/users', userRoute);
 
 app.get('/about', (req, res) => {
     res.send('This is the about page');

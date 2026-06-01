@@ -17,6 +17,14 @@ const productSchema = new mongoose.Schema({
     required: true,
     min: [1, "Price must be greater than 0"],
     max: [1000000, "Price must be less than 10,00,000."],
+  },
+  stock: {
+    type: Number,
+    default: 1,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
   }
 });
 
