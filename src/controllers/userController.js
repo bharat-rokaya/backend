@@ -6,25 +6,20 @@ const getUser = async(req, res) => {
         res.json(user);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: error.message || 'Failed to fetch users' });
+        res.status(500).send(error.message);
     }
-}
+};
 
 const getUserById = async (req, res) => {
     try {
         const userId = req.params.id;
-        if (!mongoose.Types.ObjectId.isValid(userId)) {
-            return res.status(400).json({ error: 'Invalid User ID' });
+        const user = await userService.getUserById(userId);
+        if (!user) {
+            return res.status(404).send('User not found');
         }
-
-        const product = await userService.getUserById(userId);
-        if (!product) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-        res.json(product);
+        res.json(user);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to fetch User' });
+        res.status(500).send(error.message);
     }
 };
 
@@ -33,8 +28,28 @@ const createUser = async(req, res) => {
         const user = await userService.createUser(req.body);
         res.status(201).json(user);
     } catch(error) {
-        res.status(500).json({ error: error.message || 'Failed to create user' });
+        res.status(500).send(error.message);
     }
 }
 
-export default {getUser, getUserById, createUser}
+const updateUser = async(req, res) => {
+    try {
+        const userId = req.params.id;
+        const user = await userService.updateUser(userId, req.body);
+        res.json(user);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+const deleteUser = async(req, res) => {
+    try {
+        const userId = req.params.id;
+        const result = await userService.deleteUser(userId);
+        res.json(result);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+export default {getUser, getUserById, createUser, updateUser, deleteUser}

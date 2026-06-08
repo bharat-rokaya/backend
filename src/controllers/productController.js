@@ -31,4 +31,24 @@ const createProduct = async (req, res) => {
     }
 };
 
-export default { getAllProducts, getProductById, createProduct };
+const updateProduct = async(req, res) => {
+    try {
+        const productId = req.params.id;
+        const newProduct = await productService.updateProduct(productId, req.body);
+        res.json(newProduct);
+    } catch (error) {
+        res.status(401).send(error.message);
+    }
+}
+
+const deleteProduct = async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const result = await productService.deleteProduct(productId);
+        res.json(result);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+
+export default { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct };

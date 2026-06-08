@@ -5,16 +5,16 @@ const getUser = async() => {
         const users = await User.find();
         return users;
     } catch (error) {
-        res.status(500).json({ error: error.message});
+        throw new Error(error.message);
     }
-}
+};
 
 const getUserById = async (id) => {
     try {
         const user = await User.findById(id);
         return user;
     } catch (error) {
-        res.status(500).json({ error: error.message});
+        throw new Error("User not found");
     }
 };
 
@@ -22,8 +22,26 @@ const createUser = async(userData) => {
     try {
         return await User.create(userData);
     } catch(error) {
-        res.status(500).json({ error: error.message });
+        throw new Error(error.message);
     }
 }
 
-export default {getUser, getUserById, createUser};
+const updateUser = async (id, userData) => {
+    try {
+        const user = await User.findByIdAndUpdate(id, userData, { new: true });
+        return user;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
+const deleteUser = async (id) => {
+    try {
+        await User.findByIdAndDelete(id);
+        return { message: 'User deleted successfully' };
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
+export default {getUser, getUserById, createUser, updateUser, deleteUser};
