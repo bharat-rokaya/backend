@@ -9,8 +9,7 @@ const register = async (userData) => {
             throw new Error("Email already in use");
         }   
         const hashedPassword = await bcrypt.hash(userData.password, 10);
-        const user = await User.create({ ...userData, password: hashedPassword });
-        return user;
+        return await User.create({ ...userData, password: hashedPassword });
     } catch (error) {
         throw new Error(error.message);
     }
@@ -33,4 +32,4 @@ const login = async (credentials) => {
     }
 };
 
-export { register, login };
+export default { register, login };
