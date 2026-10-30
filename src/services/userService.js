@@ -1,9 +1,9 @@
-import User from '../models/User.js';
+import User from "../models/User.js";
+import { hashPassword } from "../utils/password.js";
 
-const getUser = async() => {
+const getUser = async () => {
     try {
-        const users = await User.find();
-        return users;
+        return await User.find();
     } catch (error) {
         throw new Error(error.message);
     }
@@ -12,23 +12,53 @@ const getUser = async() => {
 const getUserById = async (id) => {
     try {
         const user = await User.findById(id);
+
+        if (!user) {
+            throw new Error("User not found");
+        }
+
         return user;
     } catch (error) {
-        throw new Error("User not found");
+        throw new Error(error.message);
     }
 };
 
-const createUser = async(userData) => {
+const createUser = async (userData) => {
     try {
-        return await User.create(userData);
-    } catch(error) {
+        const data = { ...userData };
+
+        if (data.password) {
+            data.password = await hashPassword(data.password);
+        }
+
+        return await User.create(data);
+    } catch (error) {
         throw new Error(error.message);
     }
-}
+};
 
 const updateUser = async (id, userData) => {
     try {
-        const user = await User.findByIdAndUpdate(id, userData, { new: true });
+        const data = { ...userData };
+
+        // Only hash if a new password is provided
+        if (data.password) {
+            data.password = await hashPassword(data.password);
+        }
+
+        const user = await User.findByIdAndUpdate(
+            id,
+            data,
+            {
+                new: true,
+                runValidators: true
+            }
+        );
+
+        if (!user) {
+            throw new Error("User not found");
+        }
+
         return user;
     } catch (error) {
         throw new Error(error.message);
@@ -37,11 +67,16 @@ const updateUser = async (id, userData) => {
 
 const deleteUser = async (id) => {
     try {
-        await User.findByIdAndDelete(id);
-        return { message: 'User deleted successfully' };
+        const user = await User.findByIdAndDelete(id);
+
+        if (!user) {
+            throw new Error("User not found");
+        }
+
+        return { message: "User deleted successfully" };
     } catch (error) {
         throw new Error(error.message);
     }
 };
 
-export default {getUser, getUserById, createUser, updateUser, deleteUser};
+export default { getUser, getUserById, createUser, updateUser, deleteUser };

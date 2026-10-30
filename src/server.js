@@ -3,6 +3,7 @@ import express from 'express';
 import config from './config/config.js';
 import productRoute from './routes/productRoute.js';
 import userRoute from './routes/userRoute.js';
+import authRoute from './routes/authRoute.js';
 import connectDB from './config/database.js';
 import bodyParser from 'body-parser';
 
@@ -19,6 +20,9 @@ app.get('/', (req, res) => {
 app.use('/api/products', productRoute);
 
 app.use('/api/users', userRoute);
+
+app.use('/api/auth', authRoute);
+
 
 app.get('/about', (req, res) => {
     res.send('This is the about page');
